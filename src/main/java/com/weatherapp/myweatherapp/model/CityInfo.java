@@ -1,6 +1,9 @@
 package com.weatherapp.myweatherapp.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 
 public class CityInfo {
@@ -57,6 +60,13 @@ public class CityInfo {
     @JsonProperty("description")
     String description;
 
+  }
+
+  public long getDaylightHours() {
+    LocalTime sunrise = LocalTime.parse(currentConditions.sunrise);
+    LocalTime sunset = LocalTime.parse(currentConditions.sunset);
+
+    return Duration.between(sunrise, sunset).toMinutes();
   }
 
 }
