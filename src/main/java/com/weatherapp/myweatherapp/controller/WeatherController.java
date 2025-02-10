@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class WeatherController {
@@ -22,7 +23,13 @@ public class WeatherController {
     return ResponseEntity.ok(ci);
   }
 
-  // TODO: given two city names, compare the length of the daylight hours and return the city with the longest day
+  // Given two city names, compare the length of the daylight hours and return the city with the longest day
+  @GetMapping("/daylight")
+  public ResponseEntity<CityInfo> daylightComparison(@RequestParam("city1") String city1,
+                                                     @RequestParam("city2") String city2) {
+    CityInfo cityWithMoreDaylight = weatherService.compareDaylight(city1, city2);
+    return ResponseEntity.ok(cityWithMoreDaylight);
+  }
 
   // TODO: given two city names, check which city its currently raining in
 
