@@ -13,6 +13,12 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Handles exceptions when a requested city is not found.
+     *
+     * @param ex the thrown {@link CityNotFoundException}
+     * @return a {@link ResponseEntity} containing error details
+     */
     @ExceptionHandler(CityNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleCityNotFoundException(CityNotFoundException ex) {
         Map<String, Object> response = new HashMap<>();
@@ -21,7 +27,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    // Handle all API-related errors.
+    /**
+     * Handles HTTP client errors, including invalid API keys and rate limits.
+     *
+     * @param e the thrown {@link HttpClientErrorException}
+     * @return a {@link ResponseEntity} containing error details
+     */
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<Map<String, Object>> handleHttpClientError(HttpClientErrorException e) {
         HttpStatusCode status = e.getStatusCode();

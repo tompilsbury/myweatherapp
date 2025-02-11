@@ -63,6 +63,14 @@ public class CityInfo {
 
   }
 
+  /**
+   * Calculates the total daylight duration in minutes based on the city's sunrise and sunset times.
+   * If either the sunrise or sunset time is missing, the method returns 0 to indicate
+   * that daylight data is unavailable. The times are parsed as LocalTime and used to calculate
+   * the duration between sunrise and sunset.
+   *
+   * @return the total daylight duration in minutes, or 0 if sunrise or sunset data is unavailable.
+   */
   @JsonIgnore
   public long getDaylightMinutes() {
     if (currentConditions.sunrise == null || currentConditions.sunset == null) {
