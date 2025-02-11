@@ -3,11 +3,9 @@ package com.weatherapp.myweatherapp.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CityInfoTest {
     private CityInfo cityInfo;
@@ -18,6 +16,9 @@ public class CityInfoTest {
         cityInfo.currentConditions = new CityInfo.CurrentConditions();
     }
 
+    // getDaylightHours() unit tests
+    //
+    //
     @Test
     void testGetDaylightHours_validTimeRange() {
         cityInfo.currentConditions.sunrise = "06:00";
@@ -57,6 +58,16 @@ public class CityInfoTest {
         cityInfo.currentConditions.sunset = "6 PM";
 
         assertThrows(java.time.format.DateTimeParseException.class, cityInfo::getDaylightHours);
+    }
+
+    @Test
+    void testGetDaylightHours_nullConditions() {
+        cityInfo.currentConditions.sunrise = null;
+        cityInfo.currentConditions.sunset = null;
+
+        long actualMinutes = cityInfo.getDaylightHours();
+
+        assertEquals(0, actualMinutes);
     }
 
 }

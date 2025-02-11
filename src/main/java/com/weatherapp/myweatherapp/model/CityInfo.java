@@ -65,9 +65,11 @@ public class CityInfo {
 
   @JsonIgnore
   public long getDaylightHours() {
+    if (currentConditions.sunrise == null || currentConditions.sunset == null) {
+      return 0;
+    }
     LocalTime sunrise = LocalTime.parse(currentConditions.sunrise);
     LocalTime sunset = LocalTime.parse(currentConditions.sunset);
-
     return Duration.between(sunrise, sunset).toMinutes();
   }
 
