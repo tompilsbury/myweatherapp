@@ -1,5 +1,6 @@
 package com.weatherapp.myweatherapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
@@ -62,6 +63,7 @@ public class CityInfo {
 
   }
 
+  @JsonIgnore
   public long getDaylightHours() {
     LocalTime sunrise = LocalTime.parse(currentConditions.sunrise);
     LocalTime sunset = LocalTime.parse(currentConditions.sunset);
