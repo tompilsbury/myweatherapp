@@ -16,7 +16,7 @@ public class CityInfoTest {
         cityInfo.currentConditions = new CityInfo.CurrentConditions();
     }
 
-    // getDaylightHours() unit tests
+    // getDaylightMinutes() unit tests
     //
     //
     @Test
@@ -25,7 +25,7 @@ public class CityInfoTest {
         cityInfo.currentConditions.sunset = "18:00";
 
         long expectedMinutes = Duration.between(java.time.LocalTime.parse("06:00"), java.time.LocalTime.parse("18:00")).toMinutes();
-        long actualMinutes = cityInfo.getDaylightHours();
+        long actualMinutes = cityInfo.getDaylightMinutes();
 
         assertEquals(expectedMinutes, actualMinutes);
     }
@@ -36,7 +36,7 @@ public class CityInfoTest {
         cityInfo.currentConditions.sunset = "15:45";
 
         long expectedMinutes = Duration.between(java.time.LocalTime.parse("08:30"), java.time.LocalTime.parse("15:45")).toMinutes();
-        long actualMinutes = cityInfo.getDaylightHours();
+        long actualMinutes = cityInfo.getDaylightMinutes();
 
         assertEquals(expectedMinutes, actualMinutes);
     }
@@ -47,7 +47,7 @@ public class CityInfoTest {
         cityInfo.currentConditions.sunset = "23:59";
 
         long expectedMinutes = Duration.between(java.time.LocalTime.parse("00:00"), java.time.LocalTime.parse("23:59")).toMinutes();
-        long actualMinutes = cityInfo.getDaylightHours();
+        long actualMinutes = cityInfo.getDaylightMinutes();
 
         assertEquals(expectedMinutes, actualMinutes);
     }
@@ -57,7 +57,7 @@ public class CityInfoTest {
         cityInfo.currentConditions.sunrise = "6 AM";
         cityInfo.currentConditions.sunset = "6 PM";
 
-        assertThrows(java.time.format.DateTimeParseException.class, cityInfo::getDaylightHours);
+        assertThrows(java.time.format.DateTimeParseException.class, cityInfo::getDaylightMinutes);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class CityInfoTest {
         cityInfo.currentConditions.sunrise = null;
         cityInfo.currentConditions.sunset = null;
 
-        long actualMinutes = cityInfo.getDaylightHours();
+        long actualMinutes = cityInfo.getDaylightMinutes();
 
         assertEquals(0, actualMinutes);
     }

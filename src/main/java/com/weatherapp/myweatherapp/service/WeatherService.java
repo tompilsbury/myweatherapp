@@ -35,7 +35,7 @@ public class WeatherService {
     CityInfo ci1 = forecastByCity(city1);
     CityInfo ci2 = forecastByCity(city2);
 
-    return (ci1.getDaylightHours() >= ci2.getDaylightHours()) ? ci1 : ci2;
+    return (ci1.getDaylightMinutes() >= ci2.getDaylightMinutes()) ? ci1 : ci2;
   }
 
 }

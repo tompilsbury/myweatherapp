@@ -64,7 +64,7 @@ public class CityInfo {
   }
 
   @JsonIgnore
-  public long getDaylightHours() {
+  public long getDaylightMinutes() {
     if (currentConditions.sunrise == null || currentConditions.sunset == null) {
       return 0;
     }

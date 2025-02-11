@@ -34,8 +34,8 @@ class WeatherServiceTest {
     void testCompareDaylight_city1HasMoreDaylight() {
         when(weatherRepo.getByCity("New York")).thenReturn(city1);
         when(weatherRepo.getByCity("Los Angeles")).thenReturn(city2);
-        when(city1.getDaylightHours()).thenReturn(720L); // 12 hours
-        when(city2.getDaylightHours()).thenReturn(600L); // 10 hours
+        when(city1.getDaylightMinutes()).thenReturn(720L); // 12 hours
+        when(city2.getDaylightMinutes()).thenReturn(600L); // 10 hours
 
         CityInfo result = weatherService.compareDaylight("New York", "Los Angeles");
         assertEquals(city1, result);
@@ -45,8 +45,8 @@ class WeatherServiceTest {
     void testCompareDaylight_city2HasMoreDaylight() {
         when(weatherRepo.getByCity("Chicago")).thenReturn(city1);
         when(weatherRepo.getByCity("Miami")).thenReturn(city2);
-        when(city1.getDaylightHours()).thenReturn(500L); // 8 hours 20 min
-        when(city2.getDaylightHours()).thenReturn(700L); // 11 hours 40 min
+        when(city1.getDaylightMinutes()).thenReturn(500L); // 8 hours 20 min
+        when(city2.getDaylightMinutes()).thenReturn(700L); // 11 hours 40 min
 
         CityInfo result = weatherService.compareDaylight("Chicago", "Miami");
         assertEquals(city2, result);
@@ -56,8 +56,8 @@ class WeatherServiceTest {
     void testCompareDaylight_equalDaylight() {
         when(weatherRepo.getByCity("Seattle")).thenReturn(city1);
         when(weatherRepo.getByCity("San Francisco")).thenReturn(city2);
-        when(city1.getDaylightHours()).thenReturn(600L); // 10 hours
-        when(city2.getDaylightHours()).thenReturn(600L); // 10 hours
+        when(city1.getDaylightMinutes()).thenReturn(600L); // 10 hours
+        when(city2.getDaylightMinutes()).thenReturn(600L); // 10 hours
 
         CityInfo result = weatherService.compareDaylight("Seattle", "San Francisco");
         assertEquals(city1, result);
