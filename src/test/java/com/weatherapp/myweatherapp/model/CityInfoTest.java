@@ -16,6 +16,7 @@ public class CityInfoTest {
         cityInfo.currentConditions = new CityInfo.CurrentConditions();
     }
 
+
     // getDaylightMinutes() unit tests
     //
     //
@@ -70,4 +71,48 @@ public class CityInfoTest {
         assertEquals(0, actualMinutes);
     }
 
+    // isRaining() unit tests
+    //
+    //
+    @Test
+    void testIsRaining_validConditions() {
+        cityInfo.currentConditions.conditions = "Rain, Partially cloudy";
+        assertTrue(cityInfo.isRaining());
+    }
+
+    @Test
+    void testIsRaining_invalidConditions() {
+        cityInfo.currentConditions.conditions = "Overcast";
+        assertFalse(cityInfo.isRaining());
+    }
+
+    @Test
+    void testIsRaining_emptyConditions() {
+        cityInfo.currentConditions.conditions = "";
+        assertFalse(cityInfo.isRaining());
+    }
+
+    @Test
+    void testIsRaining_nullConditions() {
+        cityInfo.currentConditions.conditions = null;
+        assertFalse(cityInfo.isRaining());
+    }
+
+    @Test
+    void testIsRaining_rainAtStart() {
+        cityInfo.currentConditions.conditions = "Rain, Cloudy, Windy";
+        assertTrue(cityInfo.isRaining());
+    }
+
+    @Test
+    void testIsRaining_rainAtMiddle() {
+        cityInfo.currentConditions.conditions = "Cloudy, Rain, Windy";
+        assertTrue(cityInfo.isRaining());
+    }
+
+    @Test
+    void testIsRaining_rainAtEnd() {
+        cityInfo.currentConditions.conditions = "Cloudy, Windy, Rain";
+        assertTrue(cityInfo.isRaining());
+    }
 }

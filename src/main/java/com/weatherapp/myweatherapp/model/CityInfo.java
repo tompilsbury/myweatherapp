@@ -81,4 +81,17 @@ public class CityInfo {
     return Duration.between(sunrise, sunset).toMinutes();
   }
 
+  /**
+   * Checks if it is currently raining based on the city's weather conditions.
+   *
+   * @return true if the conditions contain "Rain", false if not or if conditions are unavailable.
+   */
+  @JsonIgnore
+  public boolean isRaining() {
+    if (currentConditions.conditions == null) {
+      return false;
+    }
+    return currentConditions.conditions.contains("Rain");
+  }
+
 }
