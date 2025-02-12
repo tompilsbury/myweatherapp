@@ -79,8 +79,8 @@ public class WeatherService {
 
     List<CityInfo> rainingCities = new ArrayList<>();
 
-    if (ci1.isRaining()) { rainingCities.add(ci1); }
-    if (ci2.isRaining()) { rainingCities.add(ci2); }
+    if (ci1 != null && ci1.isRaining()) { rainingCities.add(ci1); }
+    if (ci2 != null && ci2.isRaining()) { rainingCities.add(ci2); }
     return rainingCities;
   }
 }
