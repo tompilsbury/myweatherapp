@@ -1,5 +1,6 @@
 package com.weatherapp.myweatherapp.service;
 
+import com.weatherapp.myweatherapp.exceptions.CityNotFoundException;
 import com.weatherapp.myweatherapp.model.CityInfo;
 import com.weatherapp.myweatherapp.repository.VisualcrossingRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -62,4 +66,79 @@ class WeatherServiceTest {
         CityInfo result = weatherService.compareDaylight("Seattle", "San Francisco");
         assertEquals(city1, result);
     }
+
+    // isRaining() unit tests
+    //
+    //
+    @Test
+    void testGetRainingCities_city1IsRaining() {
+        when(weatherRepo.getByCity("London")).thenReturn(city1);
+        when(weatherRepo.getByCity("Paris")).thenReturn(city2);
+        when(city1.isRaining()).thenReturn(true);
+        when(city2.isRaining()).thenReturn(false);
+
+        List<CityInfo> result = weatherService.getRainingCities("London", "Paris");
+        List<CityInfo> expected = new ArrayList<>();
+        expected.add(city1);
+        assertEquals(result, expected);
+    }
+
+    @Test
+    void testGetRainingCities_city2IsRaining() {
+        when(weatherRepo.getByCity("Leicester")).thenReturn(city1);
+        when(weatherRepo.getByCity("Newcastle")).thenReturn(city2);
+        when(city1.isRaining()).thenReturn(false);
+        when(city2.isRaining()).thenReturn(true);
+
+        List<CityInfo> result = weatherService.getRainingCities("Leicester", "Newcastle");
+        List<CityInfo> expected = new ArrayList<>();
+        expected.add(city2);
+        assertEquals(result, expected);
+    }
+
+    @Test
+    void testGetRainingCities_bothRaining() {
+        when(weatherRepo.getByCity("Milan")).thenReturn(city1);
+        when(weatherRepo.getByCity("Barcelona")).thenReturn(city2);
+        when(city1.isRaining()).thenReturn(true);
+        when(city2.isRaining()).thenReturn(true);
+
+        List<CityInfo> result = weatherService.getRainingCities("Milan", "Barcelona");
+        List<CityInfo> expected = new ArrayList<>();
+        expected.add(city1);
+        expected.add(city2);
+        assertEquals(result, expected);
+    }
+
+    @Test
+    void testGetRainingCities_neitherRaining() {
+        when(weatherRepo.getByCity("Tokyo")).thenReturn(city1);
+        when(weatherRepo.getByCity("Sydney")).thenReturn(city2);
+        when(city1.isRaining()).thenReturn(false);
+        when(city2.isRaining()).thenReturn(false);
+
+        List<CityInfo> result = weatherService.getRainingCities("Tokyo", "Sydney");
+        List<CityInfo> expected = new ArrayList<>();
+        assertEquals(result, expected);
+    }
+
+    @Test
+    void testGetRainingCities_city1HasNoData() {
+        when(weatherRepo.getByCity("Berlin")).thenReturn(null);
+        when(weatherRepo.getByCity("Madrid")).thenReturn(city2);
+        when(city2.isRaining()).thenReturn(true);
+
+        List<CityInfo> result = weatherService.getRainingCities("Berlin", "Madrid");
+        List<CityInfo> expected = new ArrayList<>();
+        expected.add(city2);
+        assertEquals(result, expected);
+    }
+
+    @Test
+    void testGetRainingCities_invalidCity1() {
+        when(weatherRepo.getByCity("FakeCity")).thenThrow(new CityNotFoundException("FakeCity"));
+
+        assertThrows(CityNotFoundException.class, () -> weatherService.getRainingCities("FakeCity", "Berlin"));
+    }
+
 }

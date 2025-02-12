@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class WeatherService {
 
@@ -60,4 +63,24 @@ public class WeatherService {
     return (ci1.getDaylightMinutes() >= ci2.getDaylightMinutes()) ? ci1 : ci2;
   }
 
+  /**
+   * Determines which of the two specified cities are currently experiencing rain.
+   *
+   * @param city1 the name of the first city to check
+   * @param city2 the name of the second city to check
+   * @return a list of {@link CityInfo} objects for cities where it is currently raining;
+   *         an empty list if neither city is experiencing rain.
+   * @throws CityNotFoundException if either city name is invalid or not found.
+   * @throws HttpClientErrorException for other API-related errors
+   */
+  public List<CityInfo> getRainingCities(String city1, String city2) {
+    CityInfo ci1 = forecastByCity(city1);
+    CityInfo ci2 = forecastByCity(city2);
+
+    List<CityInfo> rainingCities = new ArrayList<>();
+
+    if (ci1.isRaining()) { rainingCities.add(ci1); }
+    if (ci2.isRaining()) { rainingCities.add(ci2); }
+    return rainingCities;
+  }
 }
