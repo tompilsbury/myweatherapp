@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class WeatherController {
 
@@ -31,6 +33,11 @@ public class WeatherController {
     return ResponseEntity.ok(cityWithMoreDaylight);
   }
 
-  // TODO: given two city names, check which city its currently raining in
-
+  // Given two city names, check which city its currently raining in
+  @GetMapping("/raining")
+  public ResponseEntity<List<CityInfo>> checkRaining(@RequestParam("city1") String city1,
+                                                  @RequestParam("city2") String city2) {
+    List<CityInfo> rainingCities = weatherService.getRainingCities(city1, city2);
+    return ResponseEntity.ok(rainingCities);
+  }
 }
