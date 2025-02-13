@@ -1,6 +1,10 @@
 package com.weatherapp.myweatherapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 
 public class CityInfo {
@@ -57,6 +61,37 @@ public class CityInfo {
     @JsonProperty("description")
     String description;
 
+  }
+
+  /**
+   * Calculates the total daylight duration in minutes based on the city's sunrise and sunset times.
+   * If either the sunrise or sunset time is missing, the method returns 0 to indicate
+   * that daylight data is unavailable. The times are parsed as LocalTime and used to calculate
+   * the duration between sunrise and sunset.
+   *
+   * @return the total daylight duration in minutes, or 0 if sunrise or sunset data is unavailable.
+   */
+  @JsonIgnore
+  public long getDaylightMinutes() {
+    if (currentConditions.sunrise == null || currentConditions.sunset == null) {
+      return 0;
+    }
+    LocalTime sunrise = LocalTime.parse(currentConditions.sunrise);
+    LocalTime sunset = LocalTime.parse(currentConditions.sunset);
+    return Duration.between(sunrise, sunset).toMinutes();
+  }
+
+  /**
+   * Checks if it is currently raining based on the city's weather conditions.
+   *
+   * @return true if the conditions contain "Rain", false if not or if conditions are unavailable.
+   */
+  @JsonIgnore
+  public boolean isRaining() {
+    if (currentConditions.conditions == null) {
+      return false;
+    }
+    return currentConditions.conditions.contains("Rain");
   }
 
 }
