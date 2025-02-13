@@ -67,6 +67,35 @@ class WeatherServiceTest {
         assertEquals(city1, result);
     }
 
+    @Test
+    void testCompareDaylight_city1NoDaylight() {
+        when(weatherRepo.getByCity("Oslo")).thenReturn(city1);
+        when(weatherRepo.getByCity("Cairo")).thenReturn(city2);
+        when(city1.getDaylightMinutes()).thenReturn(0L);  // No daylight data
+        when(city2.getDaylightMinutes()).thenReturn(650L); // Valid daylight
+
+        CityInfo result = weatherService.compareDaylight("Oslo", "Cairo");
+        assertEquals(city2, result);
+    }
+
+    @Test
+    void testCompareDaylight_bothCitiesNoDaylight() {
+        when(weatherRepo.getByCity("Delhi")).thenReturn(city1);
+        when(weatherRepo.getByCity("Jakarta")).thenReturn(city2);
+        when(city1.getDaylightMinutes()).thenReturn(0L); // No daylight
+        when(city2.getDaylightMinutes()).thenReturn(0L); // No daylight
+
+        CityInfo result = weatherService.compareDaylight("Delhi", "Jakarta");
+        assertEquals(city1, result); // Default to city1
+    }
+
+    @Test
+    void testCompareDaylight_invalidCity1() {
+        when(weatherRepo.getByCity("InvalidCity")).thenThrow(new CityNotFoundException("InvalidCity"));
+
+        assertThrows(CityNotFoundException.class, () -> weatherService.compareDaylight("InvalidCity", "Berlin"));
+    }
+
     // isRaining() unit tests
     //
     //
